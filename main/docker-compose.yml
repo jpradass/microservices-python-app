@@ -41,7 +41,5 @@ services:
       - flask-network
 
 networks: 
-  django-network:
-    name: django-network
   flask-network:
     name: flask-network
