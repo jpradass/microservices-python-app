@@ -2,6 +2,7 @@ version: '3.8'
 services:
   
   backend:
+    container_name: django-backend
     build: 
       context: .
       dockerfile: Dockerfile
@@ -18,6 +19,7 @@ services:
 
   db:
     image: mysql:5.7.22
+    container_name: django-db
     restart: always
     environment: 
       MYSQL_DATABASE: admin
@@ -42,6 +44,7 @@ services:
       - django-network
 
   amqps:
+    container_name: amqp
     image: rabbitmq:3.8-rc-alpine
     restart: always
     environment: 

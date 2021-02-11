@@ -1,7 +1,7 @@
 import pika, json
 from main import Product, db
 
-params = pika.URLParameters('amqp://guest:guest@admin_amqps_1:5672/host')
+params = pika.URLParameters('amqp://guest:guest@amqp:5672/host?heartbeat=600')
 
 connection = pika.BlockingConnection(params)
 

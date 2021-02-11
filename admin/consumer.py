@@ -1,6 +1,11 @@
-import pika
+import pika, json, os, django
 
-params = pika.URLParameters('amqp://guest:guest@admin_amqps_1:5672/host')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'admin.settings')
+django.setup()
+
+from products.models import Product
+
+params = pika.URLParameters('amqp://guest:guest@amqp:5672/host?heartbeat=600')
 
 connection = pika.BlockingConnection(params)
 
@@ -10,7 +15,12 @@ channel.queue_declare(queue='admin')
 
 def callback(ch, method, properties, body):
     print('Received in admin')
-    print(body)
+    id = json.loads(body)
+    print(id)
+    product = Product.objects.get(id=id)
+    product.likes += 1
+    product.save()
+    print("Product has been liked")
 
 channel.basic_consume(queue='admin', on_message_callback=callback, auto_ack=True)
 
